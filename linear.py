@@ -23,10 +23,10 @@ Y = data['Salary'].values
 mean_x = numpy.mean(X)
 mean_y = numpy.mean(Y)
 
-# Total number of values
+# getting m by calculating the length of x
 m = len(X)
 
-# Using the formula to calculate B1 and B0
+# calculating our b0 and b1 to be used in the regression formula
 numerator = 0
 denominator = 0
 for i in range(m):
@@ -34,38 +34,31 @@ for i in range(m):
     denominator += (X[i] - mean_x) ** 2
 b1 = numerator / denominator
 b0 = mean_y - (b1 * mean_x)
-
-# Print coefficients
-print("This is B1:", b1, "and this is B0:", b0)
-
-# Plotting Values and Regression Line
-
+print("The value of the B1 is:", b1, "and the value of b0 is:", b0) #printing the values we just calculated
+# setting the plot limitations
 max_x = numpy.max(X) + 5
 min_x = numpy.min(X) - 5
-
-# Calculating line values x and y
 x = numpy.linspace(min_x, max_x, 1000)
-y = b0 + b1 * x
+y = b0 + b1 * x # regression line formula
 
-# Plotting Line
-plot.plot(x, y, color='#58b970', label='Regression Line')
-# Plotting Scatter Points
-plot.scatter(X, Y, c='#ef5423', label='Scatter Plot')
+# setting up the plot format. using scatter points
+plot.plot(x, y, color='#040707', label='Regression Line')
+plot.scatter(X, Y, c='#FFA500', label='Scatter Plot')
 
 plot.xlabel('YearsExperience')
 plot.ylabel('Salary')
 plot.legend()
 plot.show()
 
-# Calculating Root Mean Squares Error
+# time to calculate RMSE
 RMSE = 0
 for i in range(m):
     y_prediction = b0 + b1 * X[i]
     RMSE += (Y[i] - y_prediction) ** 2
 RMSE = numpy.sqrt(RMSE/m)
-print("This is Root Mean Square Error", RMSE)
+print("The Root Mean Square Error is", RMSE)
 
-# calculating coefficient determination
+# formula for the coefficient of determination
 SST = 0
 SSR = 0
 for i in range(m):
@@ -73,180 +66,4 @@ for i in range(m):
     SST += (Y[i] - mean_y) ** 2
     SSR += (Y[i] - y_prediction) ** 2
 r2 = 1 - (SSR/SST)
-print("This is the coefficient of determination", r2)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-from sklearn.model_selection import train_test_split
-import matplotlib.patches as mpatches
-
-# finding the Slope
-def Slope(a,b):
-    """
-    "this function finds the slope of the line"
-    :param a: variable a
-    :param b: variable b
-    :return: the slope of the line
-    """
-    n = len(a)
-    two_sum = np.sum(a*b)
-    sumX = np.sum(a)
-    sumY = np.sum(b)
-    sumX_2 = np.sum(a**2)
-    slope = (n*two_sum-sumX*sumY)/(n*sumX_2-(sumX)**2)
-    return slope
-
-
-def Intercept(a,b):
-    """
-    Finding Intercept of linear regression line
-    :param a: variable a
-    :param b: variable b
-    :return: the intercept of the line
-    """
-
-    intercept = np.mean(b)-Slope(a, b)*np.mean(a)
-    return intercept
-
-
-def Predictions(slope,x_input,intercept):
-    """
-    making predictions
-    :param slope: slope of the line
-    :param x_input: x input
-    :param intercept: intercept of the line
-    :return:
-    """
-    predict=slope*x_input + intercept
-    return predict
-
-def R_squared(predicted_values,test_values):
-    """
-    getting rsquared
-    :param predicted_values: predicted values
-    :param test_values: test values we use (y)
-    :return:
-    """
-    f=predicted_values
-    y=test_values
-    print(f,'\n\n',y)
-    #sum of squares
-    ss_total=np.sum((y-np.mean(y))**2)
-    ss_res=np.sum((y-f)**2)
-    #R-squared formula
-    R_2=1-(ss_res/ss_total)
-    return R_2
-
-def correlation_coeff(predicted_values,test_values):
-    """
-    getting the correlations
-    :param predicted_values: predicted values for the correlations
-    :param test_values: test values to use
-    :return:
-    """
-    a=predicted_values
-    b=test_values
-    n=len(a)
-    two_sum=np.sum(a*b)
-    sumX=np.sum(a)
-    sumY=np.sum(b)
-    sumX_2=np.sum(a**2)
-    sumY_2=np.sum(b**2)
-    score=(n*two_sum-sumX*sumY)/np.sqrt((n*sumX_2-(sumX)**2)*(n*sumY_2-(sumY)**2))
-    return score
-
-def Covariance(X,Y):
-    """
-    finding covariance for our x and y
-    :param X: variable x to predict
-    :param Y: variable y
-    :return: cov - the covariance
-    """
-    a=X
-    b=Y
-    n=len(a)
-    two_sum=np.sum(a*b)
-    cov=two_sum/n-np.mean(a)*np.mean(b)
-    return cov
-
-# this line imports the data in csv format
-dataset=pd.read_csv('Salary.csv')
-# this csv file contains random data about salaries and years of experience.
-# we are trying to see the regression between salaries and years of experience
-
-# splitting data using libraries
-array = dataset.values
-X = array[:,0]
-print(X.shape)
-Y = array[:,1]
-print(Y.shape)
-
-# printing covariance
-print(Covariance(X,Y))
-
-# spliting test and train data
-test_size = 0.10
-seed = 7
-X_train, X_validation, Y_train, Y_validation = train_test_split(X, Y,test_size= test_size, random_state=seed)
-
-# this code prints the intercepts of the data
-intercept=Intercept(X_train,Y_train)
-slope=Slope(X_train,Y_train)
-print("this is the intercept", intercept, "and the slope" , slope)
-predictions = Predictions(slope=slope, x_input=X_validation, intercept=intercept)
-print("these are the predictions", predictions)
-print("these are the r squared", R_squared(predicted_values=predictions,test_values=Y_validation))
-print("this is the coefficient of determination", correlation_coeff(test_values=Y_validation,predicted_values=predictions))
-
-# calculating linear regression with the equation
-y=slope*X+intercept
-
-# plotting linear regression
-plt.scatter(X,Y,marker='^',color='k',alpha=0.55)
-plt.plot(X,y,color='R',linewidth=2)
-red_patch = mpatches.Patch(color='red', label='Regression Line')
-plt.legend(loc=0,handles=[red_patch])
-plt.title('Linear Regression Model')
-plt.tight_layout(pad=2)
-plt.grid(False)
-plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
+print("The coefficient of determination is", r2)
