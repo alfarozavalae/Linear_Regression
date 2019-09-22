@@ -3,6 +3,7 @@
 # This program was created by: Emely Alfaro
 # Program 1: Regression Model
 # Acknowledgements: Elaheh Jamali (class partner who did the homework with me
+#                   Giorgi Lomia. Our TA who answered questions about the libraries and the regression model.
 # Libraries used: this program uses numpy, matplotlib, pandas and matplotlib.patches for match calculations, manipulating big data
 # and plotting the linear regression. I did use sklearn.modelselection only for splitting the data
 
