@@ -1,10 +1,105 @@
 # This program calculates linear regression
 # a sample file "Salary.csv" with some data is used
-# This program was created by: Emely Alfaro"
+# This program was created by: Emely Alfaro
+# Program 1: Regression Model
 # Acknowledgements: Elaheh Jamali (class partner who did the homework with me
-#                    Lalith Bharadwaj (Her public Github repo served as guide for this program)
 # Libraries used: this program uses numpy, matplotlib, pandas and matplotlib.patches for match calculations, manipulating big data
 # and plotting the linear regression. I did use sklearn.modelselection only for splitting the data
+
+import numpy
+import matplotlib.pyplot as plot
+import pandas as pd
+
+# opening the csv file
+data = pd.read_csv('Salary.csv')
+print(data.shape)
+print(data.head())
+
+# separating x and y. (dependent and independent variables using .values
+X = data['YearsExperience'].values
+Y = data['Salary'].values
+
+# using the mean to calculate the  value of x and y
+mean_x = numpy.mean(X)
+mean_y = numpy.mean(Y)
+
+# Total number of values
+m = len(X)
+
+# Using the formula to calculate B1 and B0
+numerator = 0
+denominator = 0
+for i in range(m):
+    numerator += (X[i] - mean_x) * (Y[i] - mean_y)
+    denominator += (X[i] - mean_x) ** 2
+b1 = numerator / denominator
+b0 = mean_y - (b1 * mean_x)
+
+# Print coefficients
+print("This is B1:", b1, "and this is B0:", b0)
+
+# Plotting Values and Regression Line
+
+max_x = numpy.max(X) + 5
+min_x = numpy.min(X) - 5
+
+# Calculating line values x and y
+x = numpy.linspace(min_x, max_x, 1000)
+y = b0 + b1 * x
+
+# Plotting Line
+plot.plot(x, y, color='#58b970', label='Regression Line')
+# Plotting Scatter Points
+plot.scatter(X, Y, c='#ef5423', label='Scatter Plot')
+
+plot.xlabel('YearsExperience')
+plot.ylabel('Salary')
+plot.legend()
+plot.show()
+
+# Calculating Root Mean Squares Error
+RMSE = 0
+for i in range(m):
+    y_prediction = b0 + b1 * X[i]
+    RMSE += (Y[i] - y_prediction) ** 2
+RMSE = numpy.sqrt(RMSE/m)
+print("This is Root Mean Square Error", RMSE)
+
+# calculating coefficient determination
+SST = 0
+SSR = 0
+for i in range(m):
+    y_prediction = b0 + b1 * X[i]
+    SST += (Y[i] - mean_y) ** 2
+    SSR += (Y[i] - y_prediction) ** 2
+r2 = 1 - (SSR/SST)
+print("This is the coefficient of determination", r2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import numpy as np
 import matplotlib.pyplot as plt
