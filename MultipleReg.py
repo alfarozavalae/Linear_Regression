@@ -6,16 +6,8 @@
 # Libraries used: this program uses numpy, matplotlib, pandas and matplotlib.patches for match calculations, manipulating big data
 # and plotting the linear regression. I did use sklearn.metrics for calcuting r2 only
 
-# This program calculates multiple regression
-# a sample file "FuelConsumptionCo2" with some data is used
-# This program was created by: Emely Alfaro
-# Program 1: Regression Model
-# Acknowledgements: Elaheh Jamali (class partner who did the homework with me
-#                   Giorgi Lomia. Our TA who answered questions about the libraries and the linear regression model.
-# Libraries used: this program uses numpy, matplotlib, pandas and matplotlib.patches for match calculations, manipulating big data
-# and plotting the linear regression. I did use sklearn.modelselection only for splitting the data
 
-#importing necessary libraries
+#importing the libraries
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -40,11 +32,11 @@ for i in indepen:
 # setting up a random seed
 np.random.seed(2)
 # distribuing dataset using random too
-mask = np.random.rand(len(df))<0.8
-train_data_X = indepen[mask]
-test_data_X = indepen[~mask]
-train_data_Y = depen[mask]
-test_data_Y = depen[~mask]
+split = np.random.rand(len(df))<0.8
+train_data_X = indepen[split]
+test_data_X = indepen[~split]
+train_data_Y = depen[split]
+test_data_Y = depen[~split]
 
 
 #shape will me 5xm_train , m_train = no of training examples
@@ -59,7 +51,6 @@ test_data_Y = test_data_Y.values.T
 weights = np.zeros((train_data_X.shape[0],1))
 bias = 0
 
-# this will normalize the data for us by using reshape
 indepen_mean = np.mean(train_data_X,axis=1).reshape(train_data_X.shape[0],1)
 depen_mean = np.mean(train_data_Y,axis=1).reshape(1,1)
 indepen_std = np.std(train_data_X,axis=1).reshape(train_data_X.shape[0],1)
