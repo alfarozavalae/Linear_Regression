@@ -14,28 +14,28 @@ import numpy as np  # library supporting large, multi-dimensional arrays and mat
 import pandas as pd  # library to take data and creates a Python object with rows and columns
 import matplotlib.pyplot as plot  # library for embedding plots
 from mpl_toolkits.mplot3d import Axes3D  # library for 3D model
-print(np.round(3.3333333333333,5))
-data = pd.read_csv('50_Startups.csv')
+
+data = pd.read_csv('FuelConsumptionCo2.csv')
 print(data.shape)
 print(data.head())
 
-Profit = data['Profit'].values # setting the dependent variable
-Administration = data['Administration'].values # setting an independent variable
-Marketing = data['Marketing'].values # setting another dependent variable
+Profit = data['CO2EMISSIONS'].values # setting the dependent variable
+FUELCONSUMPTION_CITY = data['FUELCONSUMPTION_CITY'].values # setting an independent variable
+FUELCONSUMPTION_HWY = data['FUELCONSUMPTION_HWY'].values # setting another dependent variable
 
 # Plotting a scatter plot from our data
 figure = plot.figure()
 axes = Axes3D(figure)
-axes.scatter(Profit, Administration, Marketing, color='#CE7D7E')
+axes.scatter(Profit, FUELCONSUMPTION_CITY, FUELCONSUMPTION_HWY, color='#CE7D7E')
 plot.show()
 
 #formulas to caclulate x and y
 m = len(Profit) # using the length of our dependent variable
 x0 = np.ones(m)
-X = np.array([x0, Profit, Administration]).T
+X = np.array([x0, Profit, FUELCONSUMPTION_CITY]).T
 #  using the matrix with 0s to start it up
 B = np.array([0, 0, 0])
-Y = np.array(Marketing)
+Y = np.array(FUELCONSUMPTION_HWY)
 alpha = 0.05 # setting learning rate for multiple regression
 
 
@@ -49,33 +49,29 @@ def cost_function(X, Y, B):
 initialCost = cost_function(X, Y, B)
 print("This is the initial cost:", initialCost)
 
-def round(x):
-    ans=[]
-    for i in x:
-        ans.append(np.round(float(i),5))
-    print(ans)
-    return ans
+# def round(x):
+#     ans=[]
+#     for i in x:
+#         ans.append(np.round(float(i),5))
+#     print(ans)
+#     return ans
 # Gradient Descent formula
 def gradient_descent(X, Y, B, alpha, iterations):
     cost_history = [0] * iterations
     m = len(Y)
-    print(type(X),type(Y),type(B),type(alpha))
+
     for iteration in range(iterations):
         # Hypothesis Values
-        h = np.array(X.dot(B))
-
-        h=round(h)
-        print(type(h[0]))
-        print(h)
+        h = (X.dot(B))
         # calculating the difference between hipotesis and values
-        loss = np.round_(h - Y,5)
+        loss = (h - Y)
         # calculating gradient
-        gradient = np.round_(X.T.dot(loss) / m,5)
+        gradient = (X.T.dot(loss) / m)
         # Changing Values of B using Gradient
         # print("B= ",np.round(B,5),'alpha= ',alpha, 'gradient= ',gradient)
-        B = np.round_(B - alpha * gradient,5)
+        B = (B - alpha * gradient)
         # calculating the new cost value
-        cost = np.round_(cost_function(X, Y, B),5)
+        cost = (cost_function(X, Y, B))
         cost_history[iteration] = cost
 
     return B, cost_history
