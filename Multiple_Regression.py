@@ -4,7 +4,6 @@
 # Program 1: Regression Model
 # Acknowledgements: Elaheh Jamali (class partner who did the homework with me
 #                   Giorgi Lomia. Our TA who answered questions about the libraries and the linear regression model.
-#                   jagadeesh-gajula/Linear-Regression-from-scratch. this public repo was used for debugging.
 
 # Libraries used: this program uses numpy, matplotlib, pandas and matplotlib.patches for match calculations, manipulating big data
 # and mpl_toolkits.mplot3d for plotting the 3D model.
