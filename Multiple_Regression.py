@@ -15,27 +15,27 @@ import pandas as pd  # library to take data and creates a Python object with row
 import matplotlib.pyplot as plot  # library for embedding plots
 from mpl_toolkits.mplot3d import Axes3D  # library for 3D model
 
-data = pd.read_csv('FuelConsumptionCo2.csv')
+data = pd.read_csv('student.csv')
 print(data.shape)
 print(data.head())
 
-Profit = data['CO2EMISSIONS'].values # setting the dependent variable
-FUELCONSUMPTION_CITY = data['FUELCONSUMPTION_CITY'].values # setting an independent variable
-FUELCONSUMPTION_HWY = data['FUELCONSUMPTION_HWY'].values # setting another dependent variable
+math = data['Math'].values # setting the dependent variable
+reading = data['Reading'].values # setting an independent variable
+writing = data['Writing'].values # setting another dependent variable
 
 # Plotting a scatter plot from our data
 figure = plot.figure()
 axes = Axes3D(figure)
-axes.scatter(Profit, FUELCONSUMPTION_CITY, FUELCONSUMPTION_HWY, color='#CE7D7E')
+axes.scatter(math, reading, writing, color='#CE7D7E')
 plot.show()
 
 #formulas to caclulate x and y
-m = len(Profit) # using the length of our dependent variable
+m = len(math) # using the length of our dependent variable
 x0 = np.ones(m)
-X = np.array([x0, Profit, FUELCONSUMPTION_CITY]).T
+X = np.array([x0, math, reading]).T
 #  using the matrix with 0s to start it up
 B = np.array([0, 0, 0])
-Y = np.array(FUELCONSUMPTION_HWY)
+Y = np.array(writing)
 alpha = 0.05 # setting learning rate for multiple regression
 
 
@@ -49,12 +49,6 @@ def cost_function(X, Y, B):
 initialCost = cost_function(X, Y, B)
 print("This is the initial cost:", initialCost)
 
-# def round(x):
-#     ans=[]
-#     for i in x:
-#         ans.append(np.round(float(i),5))
-#     print(ans)
-#     return ans
 # Gradient Descent formula
 def gradient_descent(X, Y, B, alpha, iterations):
     cost_history = [0] * iterations
@@ -62,22 +56,19 @@ def gradient_descent(X, Y, B, alpha, iterations):
 
     for iteration in range(iterations):
         # Hypothesis Values
-        h = (X.dot(B))
+        h = X.dot(B)
         # calculating the difference between hipotesis and values
-        loss = (h - Y)
+        loss = h - Y
         # calculating gradient
-        gradient = (X.T.dot(loss) / m)
+        gradient = X.T.dot(loss) / m
         # Changing Values of B using Gradient
         # print("B= ",np.round(B,5),'alpha= ',alpha, 'gradient= ',gradient)
-        B = (B - alpha * gradient)
+        B = B - alpha * gradient
         # calculating the new cost value
         cost = (cost_function(X, Y, B))
         cost_history[iteration] = cost
 
     return B, cost_history
-
-
-# 100000 Iterations
 newB, cost_history = gradient_descent(X, Y, B, alpha, 100000)
 
 # New Values of B
